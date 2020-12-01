@@ -1,5 +1,10 @@
 # Command Line Text Editor
 
+<p align="center">
+  <img src="./.github/editor.gif" />
+</p>
+
+
 ## References 
 
 https://devdocs.io/c/
