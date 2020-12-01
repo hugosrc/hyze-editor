@@ -1,3 +1,5 @@
+/* Includes */
+
 #define _DEFAULT_SOURCE
 #define _BSD_SOURCE
 #define _GNU_SOURCE
@@ -82,8 +84,7 @@ void die(const char* s) {
 }
 
 void disableRawMode() {
-  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &E.orig_termious) == -1) 
-  {
+  if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &E.orig_termious) == -1) {
     die("tcsetattr");
   }
 }
@@ -98,7 +99,7 @@ void enableRawMode() {
   raw.c_oflag &= ~(OPOST);
   raw.c_cflag |= (CS8);
   raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-
+  
   raw.c_cc[VMIN] = 0;
   raw.c_cc[VTIME] = 1;
 
@@ -161,8 +162,6 @@ int getCursorPosition(int* rows, int* cols) {
 
   if (write(STDOUT_FILENO, "\x1b[6n", 4) != 4) return -1;
 
-  printf("\n");
-
   while (i < sizeof(buf) - 1)
   {
     if (read(STDIN_FILENO, &buf[i], 1) != 1) break;
@@ -181,8 +180,7 @@ int getCursorPosition(int* rows, int* cols) {
 int getWindowSize(int* rows, int* cols) {
   struct winsize ws;
 
-  if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0)
-  {
+  if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0) {
     if (write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) return -1;
     return getCursorPosition(rows, cols);
   } else {
@@ -800,8 +798,7 @@ void editorRefreshScreen() {
   snprintf(buf, sizeof(buf), "\x1b[%d;%dH", (E.cy - E.rowoff) + 1, (E.rx + E.coloff) + 1);
   
   abAppend(&ab, buf, strlen(buf));
-
-  abAppend(&ab, "\x1b[H", 3);
+  
   abAppend(&ab, "\x1b[?25h", 6);
 
   write(STDOUT_FILENO, ab.b, ab.length);
