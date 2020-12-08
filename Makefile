@@ -1,2 +1,43 @@
-main: main.c 
-	$(CC) main.c -o main -Wall -Wextra -pedantic -std=c99
+# binary file
+EXECUTABLE=must-editor
+
+# folders
+BIN_DIR=bin
+SRC_DIR=source
+INCLUDE_DIR=include
+
+# compiler
+CC=gcc
+
+# compiler flags
+CFLAGS += -Wall 						 \
+					-g 								 \
+					-I $(INCLUDE_DIR)/ \
+
+CFLAGS := $(CFLAGS)
+
+# compiler command
+COMPILE=$(CC) $(CFLAGS) -c $^ -o $@
+
+# get .c files in source
+SRC_FILES=$(wildcard $(SRC_DIR)/*.c)
+
+# get name of .o files in source
+SRC_OBJS=$(patsubst $(SRC_DIR)/%.c, $(BIN_DIR)/%.o, $(SRC_FILES))
+
+# Create src object files
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.c
+	$(COMPILE)
+
+.PHONY: all build clean clean-src
+
+all: build
+
+build: $(SRC_OBJS)
+	$(CC) $^ -o $(BIN_DIR)/$(EXECUTABLE)
+
+clean-src:
+	$(RM) $(SRC_OBJS)
+
+clean:
+	rm -rf $(BIN_DIR)/*
