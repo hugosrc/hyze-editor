@@ -4,6 +4,12 @@
 #include <time.h>
 #include <termios.h>
 
+#include "row.h"
+
+#define EDITOR_VERSION "0.0.1"
+#define EDITOR_TAB_STOP 8
+#define EDITOR_QUIT_TIMES 3
+
 #define CTRL_KEY(k) ((k) & 0x1f) 
 
 enum editorKey {
@@ -18,13 +24,6 @@ enum editorKey {
   PAGE_UP,
   PAGE_DOWN
 };
-
-typedef struct erow {
-  int size;
-  int rsize;
-  char* chars;
-  char* render;
-} erow;
 
 struct editorConfig {
   int cx, cy;
