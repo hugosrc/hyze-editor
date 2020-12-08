@@ -41,4 +41,14 @@ struct editorConfig {
   struct termios orig_termious; 
 };
 
+void editorInsertChar(int c);
+
+void editorInsertNewLine();
+
+void editorDelChar();
+
+void editorFindCallback(char *query, int key);
+
+void editorFind();
+
 #endif

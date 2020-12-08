@@ -18,200 +18,16 @@
 #include "terminal.h"
 #include "editor.h"
 #include "buffer.h"
+#include "row.h"
+#include "io.h"
+#include "prompt.h"
 
 #define ABUF_INIT {NULL, 0}
 
 struct editorConfig Editor;
 
-/* Prototypes */
-
 void editorSetStatusMessage(const char* fmt, ...);
-
 void editorRefreshScreen();
-
-char *editorPrompt(char *prompt, void (*callback)(char *, int));
-
-/* Editor Operations */
-
-void editorInsertChar(int c) {
-  if (Editor.cy == Editor.numrows) {
-    editorInsertRow(Editor.numrows, "", 0);
-  }
-
-  editorRowInsertChar(&Editor.row[Editor.cy], Editor.cx, c);
-  Editor.cx++;
-}
-
-void editorInsertNewLine() {
-  if (Editor.cx == 0) {
-    editorInsertRow(Editor.cy, "", 0);
-  } else {
-    erow *row = &Editor.row[Editor.cy];
-    editorInsertRow(Editor.cy + 1, &row->chars[Editor.cx], row->size - Editor.cx);
-    row = &Editor.row[Editor.cy];
-    row->size = Editor.cx;
-    row->chars[row->size] = '\0';
-    editorUpdateRow(row);
-  }
-
-  Editor.cy++;
-  Editor.cx = 0;
-}
-
-void editorDelChar() {
-  if (Editor.cy == Editor.numrows) return;
-  if (Editor.cx == 0 && Editor.cy == 0) return;
-
-  erow* row = &Editor.row[Editor.cy];
-  if (Editor.cx > 0) {
-    editorRowDelChar(row, Editor.cx - 1);
-    Editor.cx--;
-  } else {
-    Editor.cx = Editor.row[Editor.cy - 1].size;
-    editorRowAppendString(&Editor.row[Editor.cy - 1], row->chars, row->size);
-    editorDelRow(Editor.cy);
-    Editor.cy--;
-  }
-}
-
-/* File I/O */
-
-char *editorRowsToString(int *buflen) {
-  int totlen = 0;
-
-  for (int i = 0; i < Editor.numrows; i++) {
-    totlen += Editor.row[i].size + 1;
-  }
-
-  *buflen = totlen;
-
-  char* buf = malloc(totlen);
-  char *p = buf;
-
-  for (int i = 0; i < Editor.numrows; i++) {
-    memcpy(p, Editor.row[i].chars, Editor.row[i].size);
-    p += Editor.row[i].size;
-    *p = '\n';
-    p++;
-  }
-
-  return buf;
-}
-
-void editorOpen(char* filename) {
-  free(Editor.filename);
-  Editor.filename = strdup(filename);
-
-  FILE* fp = fopen(filename, "r");
-  if (!fp) die("fopen");
-
-  char* line = NULL;
-  size_t linecap = 0;
-  ssize_t linelen;
-  
-  while ((linelen = getline(&line, &linecap, fp)) != -1) {
-    while (linelen > 0 && (line[linelen - 1] == '\n' || line[linelen - 1] == '\r')) linelen--;
-    editorInsertRow(Editor.numrows, line, linelen);
-  }
-
-  free(line);
-  fclose(fp);
-  Editor.dirty = 0;
-}
-
-void editorSave() {
-  if (Editor.filename == NULL) {
-    Editor.filename = editorPrompt("Save as: %s (ESC to cancel)", NULL);
-    if (Editor.filename == NULL) {
-      editorSetStatusMessage("Save aborted");
-      return;
-    }
-  }
-
-  int len;
-  char *buf = editorRowsToString(&len);
-  
-  int fd = open(Editor.filename, O_RDWR | O_CREAT, 0644);
-
-  if (fd != -1) {
-    if (ftruncate(fd, len) != -1) {
-      if (write(fd, buf, len) == len) {
-        close(fd);
-        free(buf);
-        Editor.dirty = 0;
-        editorSetStatusMessage("%d bytes written to disk", len);
-        return;
-      }
-    }
-    close(fd);
-  }
-  
-  free(buf);
-  editorSetStatusMessage("Can't save! I/O error: %s", strerror(errno));
-}
-
-/* Find */
-
-void editorFindCallback(char *query, int key) {
-  static int last_match = -1;
-  static int direction = 1;
-
-  if (key == '\r' || key == '\x1b') {
-    last_match = -1;
-    direction = 1;
-    return;
-  } else if (key == ARROW_RIGHT || key == ARROW_DOWN) {
-    direction = 1;
-  } else if (key == ARROW_LEFT || key == ARROW_UP) {
-    direction = -1;
-  } else {
-    last_match = -1;
-    direction = 1;
-  }
-
-  if (last_match == -1) direction = 1;
-
-  int current = last_match;
-
-  for (int i = 0; i < Editor.numrows; i++) {
-    current += direction;
-    if (current == -1) {
-      current = Editor.numrows - 1;
-    } else if (current == Editor.numrows) {
-      current = 0;
-    }
-
-    erow *row = &Editor.row[current];
-    char *match = strstr(row->render, query);
-    if (match) {
-      last_match = current;
-      Editor.cy = current;
-      Editor.cx = editorRowRxToCx(row, match - row->render);
-      Editor.rowoff = Editor.numrows;
-      break;
-    }
-  }
-}
-
-void editorFind() {
-  int saved_cx = Editor.cx;
-  int saved_cy = Editor.cy;
-  int saved_coloff = Editor.coloff;
-  int saved_rowoff = Editor.rowoff;
-
-  char *query = editorPrompt("Search: %s (Use ESC/Arrows/Enter)", editorFindCallback);
-
-  if (query) {
-    free(query);
-  } else {
-    Editor.cx = saved_cx;
-    Editor.cy = saved_cy;
-    Editor.coloff = saved_coloff;
-    Editor.rowoff = saved_rowoff;
-  }
-}
-
-/* Input */
 
 char *editorPrompt(char *prompt, void (*callback)(char *, int)) {
   size_t bufsize = 128;
@@ -377,8 +193,6 @@ void editorProcessKeypress() {
   quit_times = EDITOR_QUIT_TIMES;
 }
 
-/* Output */
-
 void editorScroll() {  
   Editor.rx = 0;
   if (Editor.cy < Editor.numrows) {
@@ -440,41 +254,6 @@ void editorDrawRows(struct abuf* ab) {
   }
 }
 
-void editorDrawStatusBar(struct abuf* ab) {
-  abAppend(ab, "\x1b[7m", 4);
-
-  char status[80], rstatus[80];
-
-  int len = snprintf(status, sizeof(status), 
-    "%.20s - %d lines %s", 
-    Editor.filename ? Editor.filename : "[No Name]", 
-    Editor.numrows, Editor.dirty ? "(modified)" : "");
-  
-  int rlen = snprintf(rstatus, sizeof(rstatus), "%d/%d", Editor.cy + 1, Editor.numrows);
-
-  if (len > Editor.screencols) len = Editor.screencols;
-  abAppend(ab, status, len);
-
-  while (len < Editor.screencols) {
-    if (Editor.screenrows - len == rlen) {
-      abAppend(ab, rstatus, rlen);
-      break;
-    } else {
-      abAppend(ab, " ", 1);
-      len++;
-    }
-  }
-  abAppend(ab, "\x1b[m", 3);
-  abAppend(ab, "\r\n", 2);
-}
-
-void editorDrawMessageBar(struct abuf* ab) {
-  abAppend(ab, "\x1b[K", 3);
-  int msglen = strlen(Editor.statusmsg);
-  if (msglen > Editor.screencols) msglen = Editor.screencols;
-  if (msglen &&  time(NULL) - Editor.statusmsg_time < 5) abAppend(ab, Editor.statusmsg, msglen);
-}
-
 void editorRefreshScreen() {
   editorScroll();
 
@@ -497,16 +276,6 @@ void editorRefreshScreen() {
   write(STDOUT_FILENO, ab.b, ab.length);
   abFree(&ab);
 }
-
-void editorSetStatusMessage(const char* fmt, ...) {
-  va_list ap;
-  va_start(ap, fmt);
-  vsnprintf(Editor.statusmsg, sizeof(Editor.statusmsg), fmt, ap);
-  va_end(ap);
-  Editor.statusmsg_time = time(NULL);
-}
-
-/* Init */
 
 void initEditor() {
   Editor.cx = 0;
