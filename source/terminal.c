@@ -6,7 +6,7 @@
 #include <sys/ioctl.h>
 
 #include "terminal.h"
-#include "editor.h" // << MAKE SURE IT IS NECESSARY
+#include "editor.h"
 
 extern struct editorConfig Editor;
 

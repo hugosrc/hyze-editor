@@ -19,12 +19,15 @@
 
 #include "terminal.h"
 #include "editor.h"
+#include "buffer.h"
 
 /* Defines */
 
 #define EDITOR_VERSION "0.0.1"
 #define EDITOR_TAB_STOP 8
 #define EDITOR_QUIT_TIMES 3
+
+#define ABUF_INIT {NULL, 0}
 
 /* Data */
 
@@ -341,29 +344,6 @@ void editorFind() {
     Editor.coloff = saved_coloff;
     Editor.rowoff = saved_rowoff;
   }
-}
-
-/* Append Buffer */
-
-struct abuf {
-  char* b;
-  int length;
-};
-
-#define ABUF_INIT {NULL, 0}
-
-void abAppend(struct abuf* ab, const char* s, int length) {
-  char *new = realloc(ab->b, ab->length + length);
-  
-  if (new == NULL) return;
-
-  memcpy(&new[ab->length], s, length);
-  ab->b = new;
-  ab->length += length;
-} 
-
-void abFree(struct abuf* ab) {
-  free(ab->b);
 }
 
 /* Input */
