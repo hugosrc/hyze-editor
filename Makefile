@@ -10,11 +10,7 @@ INCLUDE_DIR=include
 CC=gcc
 
 # compiler flags
-CFLAGS += -Wall 						 \
-					-g 								 \
-					-I $(INCLUDE_DIR)/ \
-
-CFLAGS := $(CFLAGS)
+CFLAGS=-Wall -g -I $(INCLUDE_DIR)/
 
 # compiler command
 COMPILE=$(CC) $(CFLAGS) -c $^ -o $@
