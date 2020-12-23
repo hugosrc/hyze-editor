@@ -42,9 +42,9 @@ $ bin/bin
 - [x] Create and edit File
 - [x] Scrolling through the file
 - [x] Search
-- [] Copy/Paste
-- [] Syntax Highlighting
-- [] 
+- [ ] Copy/Paste
+- [ ] Syntax Highlighting
+- [ ] 
 
 ## Author
 
