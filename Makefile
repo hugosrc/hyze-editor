@@ -1,5 +1,5 @@
 # binary file
-EXECUTABLE=must-editor
+EXEC=bin
 
 # folders
 BIN_DIR=bin
@@ -34,7 +34,7 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 all: build
 
 build: $(SRC_OBJS)
-	$(CC) $^ -o $(BIN_DIR)/$(EXECUTABLE)
+	$(CC) $^ -o $(BIN_DIR)/$(EXEC)
 
 clean-src:
 	$(RM) $(SRC_OBJS)
