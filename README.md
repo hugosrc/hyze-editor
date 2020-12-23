@@ -46,6 +46,12 @@ $ bin/bin
 - [] Syntax Highlighting
 - [] 
 
+## Author
+
+Created by Hugo Souza! Contact 👋!
+
+[![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:hugo.uibai54@gmail.com)](mailto:hugo.uibai54@gmail.com/)
+
 ## References 
 
 https://devdocs.io/c/
