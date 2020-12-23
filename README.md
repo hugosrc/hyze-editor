@@ -44,7 +44,6 @@ $ bin/bin
 - [x] Search
 - [ ] Copy/Paste
 - [ ] Syntax Highlighting
-- [ ] 
 
 ## Author
 
