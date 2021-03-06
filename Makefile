@@ -31,6 +31,7 @@ all: build
 
 build: $(SRC_OBJS)
 	$(CC) $^ -o $(BIN_DIR)/$(EXEC)
+	rm -rf $(BIN_DIR)/*.o
 
 clean-src:
 	$(RM) $(SRC_OBJS)
