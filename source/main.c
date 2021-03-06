@@ -3,26 +3,17 @@
 #define _GNU_SOURCE
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
-#include <termios.h>
-#include <ctype.h>
-#include <errno.h>
-#include <sys/ioctl.h>
 #include <string.h>
-#include <sys/types.h>
-#include <stdarg.h>
-#include <time.h>
-#include <fcntl.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #include "terminal.h"
+#include "prompt.h"
 #include "editor.h"
 #include "buffer.h"
 #include "row.h"
 #include "io.h"
-#include "prompt.h"
-
-#define ABUF_INIT {NULL, 0}
 
 struct editorConfig Editor;
 
