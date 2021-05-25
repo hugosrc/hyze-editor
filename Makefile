@@ -1,8 +1,8 @@
 # binary file
-EXEC=bin
+EXEC=hyze
 
 # folders
-BIN_DIR=bin
+BUILD_DIR=build
 SRC_DIR=source
 INCLUDE_DIR=include
 
@@ -19,10 +19,10 @@ COMPILE=$(CC) $(CFLAGS) -c $^ -o $@
 SRC_FILES=$(wildcard $(SRC_DIR)/*.c)
 
 # get name of .o files in source
-SRC_OBJS=$(patsubst $(SRC_DIR)/%.c, $(BIN_DIR)/%.o, $(SRC_FILES))
+SRC_OBJS=$(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRC_FILES))
 
 # Create src object files
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(COMPILE)
 
 .PHONY: all build clean clean-src
@@ -30,11 +30,11 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c
 all: build
 
 build: $(SRC_OBJS)
-	$(CC) $^ -o $(BIN_DIR)/$(EXEC)
-	rm -rf $(BIN_DIR)/*.o
+	$(CC) $^ -o $(BUILD_DIR)/$(EXEC)
+	rm -rf $(BUILD_DIR)/*.o
 
 clean-src:
 	$(RM) $(SRC_OBJS)
 
 clean:
-	rm -rf $(BIN_DIR)/*
+	rm -rf $(BUILD_DIR)/*

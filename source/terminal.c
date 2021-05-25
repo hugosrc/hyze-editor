@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <termios.h>
-#include <errno.h>
-#include <sys/ioctl.h>
-
 #include "terminal.h"
-#include "editor.h"
 
 extern struct editorConfig Editor;
 

@@ -1,4 +1,4 @@
-bin/*
-!bin/.gitkeep
-
 .vscode/
+.idea/
+
+build/

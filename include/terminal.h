@@ -1,5 +1,14 @@
-#ifndef TERMINAL_H
-#define TERMINAL_H
+#ifndef TERMINAL_H_
+#define TERMINAL_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <ctype.h>
+
+#include "editor.h"
 
 void die(const char *s);
 

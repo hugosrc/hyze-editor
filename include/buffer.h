@@ -1,7 +1,10 @@
-#ifndef BUFFER_H
-#define BUFFER_H
+#ifndef BUFFER_H_
+#define BUFFER_H_
 
-#define ABUF_INIT {NULL, 0}
+#include <stdlib.h>
+#include <string.h>
+
+#define ABUF_INIT { NULL, 0 }
 
 struct abuf {
   char* b;
