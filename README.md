@@ -1,68 +1,99 @@
-<h1 align="center">Must: Text Editor</h1>
+<h1 align="center" id="hyze-header">Hyze Text Editor</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/languages/top/hugosrc/text-editor?color=%23FF9000">
-  <img src="https://img.shields.io/github/license/hugosrc/text-editor" />
-  <img src="https://img.shields.io/github/languages/code-size/hugosrc/text-editor" />
+  <img src="https://img.shields.io/github/license/hugosrc/text-editor?color=%23f56942" />
+  <img src="https://img.shields.io/github/languages/top/hugosrc/text-editor?color=%23f56942">
+  <img src="https://img.shields.io/github/languages/code-size/hugosrc/text-editor?color=%23f56942" />
 </p>
 
-<p align="center">Must is a Command Line Text Editor that allows you to create and edit text files in a simple way.</p>
+<p align="center">Hyze is a command-line source code editor that allows you to create and edit code files in an extremely simple way, it also has features that help with productivity, search, syntax highlighting, etc. Initially based on the <a href="https://github.com/snaptoken/kilo-src">KILO Text Editor</a>.</p>
 
 <p align="center">
-  <img src="./.github/editor.gif" width="60%" />
+  <img src="./.github/images/preview.gif" width="90%" />
 </p>
 
-## Getting started
+# Table of contents
 
-### Requirements
+* [Overview](#hyze-header)
+* [Getting Started](#getting-started)
+  * [Requirements](#requirements)
+  * [Download Hyze](#download-hyze)
+  * [Building Hyze](#building-hyze)
+  * [Executing Hyze](#executing-hyze)
+* [Features](#features)
+* [Author](#author)
+* [Reference Links](#author)
 
-- [GCC](https://gcc.gnu.org/)
-- [GNU Make](https://www.gnu.org/software/make/)
+# Getting Started
 
-### Clone the project and access the folder
+## Requirements
+
+- [GCC](https://gcc.gnu.org/) The GNU compiler collection includes front-ends for various programming languages.
+
+- [GNU Make](https://www.gnu.org/software/make/) The GNU Make is a tool which controls the generation of executables and other non-source files of a program from the program's source files.
+
+- [GDB](https://www.gnu.org/software/gdb/) (Optional) The GNU Project debugger, allows you to see what is going on `inside' another program while it executes -- or what another program was doing at the moment it crashed.
+
+## Download Hyze
+
+The easiest way to get Hyze onto your computer is using git clone. For more information, see [Git Clone Docs](https://git-scm.com/docs/git-clone).
+
+Once you have git you can get Hyze with the following command line:
 
 ```bash
-$ git clone https://github.com/hugosrc/text-editor && cd text-editor
+$ git clone https://github.com/hugosrc/hyze-editor.git
 ```
 
-### Follow the steps below
+## Building Hyze
+
+If you don't have Hyze on your computer yet, see the step-by-step how to <a href="#download-hyze">download</a> it.
+
+1. Access the Hyze folder 
+```bash
+$ cd hyze-editor/
+```
+
+2. Create build directory
+```bash
+$ mkdir build/
+```
+
+3. Execute command to start build process.
+```bash
+$ make build
+```
+
+## Executing Hyze
+
+To run hyze is simple, just enter the following command line, replacing the \<filename> with the name of the file to open, if you don't have the file, the argument can be empty.
 
 ```bash
-# Start application build process
-$ make
-
-# Execute binary file
-$ bin/bin
-
-# Well done, project is started!
+$ build/hyze <filename>
 ```
 
-## Features
+# Features
 
-- [x] Create and edit File
-- [x] Scrolling through the file
+- [x] Create and Edit Files
+- [x] Vertical and Horizontal Scroll
 - [x] Search
+- [x] Syntax Highlighting
 - [ ] Copy/Paste
-- [ ] Syntax Highlighting
+- [ ] Auto Bracket Closing
+- [ ] Config File (.hyzerc)
+- [ ] Auto Indent
+- [ ] More Filetypes
+- [ ] Multiple Buffers  
 
-## Author
+# Author
 
-Created by Hugo Souza! Contact 👋!
+Created by Hugo Souza(hugosr.contato@gmail.com), Contact 👋!
 
-[![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:hugo.uibai54@gmail.com)](mailto:hugo.uibai54@gmail.com/)
+# References Links
 
-## References 
-
-https://devdocs.io/c/
-
-http://www.asciitable.com/
-
-https://notes.burke.libbey.me/ansi-escape-codes/
-
-https://viewsourcecode.org/snaptoken/kilo/
-
-https://en.wikipedia.org/wiki/VT100
-
-https://www.youtube.com/watch?v=8G80nuEyDN4&t=225s
-
-https://bixense.com/clicolors/
+- [Kilo Text Editor](https://viewsourcecode.org/snaptoken/kilo/)
+- [ASCII Table](http://www.asciitable.com/)
+- [ESC Codes](https://notes.burke.libbey.me/ansi-escape-codes/)
+- [Standard C Library Functions](https://devdocs.io/c/)
+- [Computer Introduction](https://www.youtube.com/watch?v=8G80nuEyDN4)
+- [Terminal Colors](https://en.wikipedia.org/wiki/ANSI_escape_code)
+- [Delete Original File?](https://superuser.com/questions/1397186/when-a-pc-edits-a-file-does-it-delete-the-original-file)
