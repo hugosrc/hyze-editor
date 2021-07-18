@@ -6,9 +6,9 @@ char *C_HL_extensions[] = { ".c", ".h", NULL };
 char *C_HL_keywords[] = {
   "typedef", "struct", "switch",
   "case", "if", "else", "for", "do", "while", "break", "continue",
-  "sizeof", "NULL", "return", "static", "enum", "default"
+  "sizeof", "NULL", "return", "static", "enum", "default",
 
-  "void|", "int|", "char|", "float|", "double|", "unsigned|", "signed|", 
+  "void|", "int|", "char|", "float|", "double|", "unsigned|", "const|", "signed|", 
   "long|", "#include|", "#ifndef|", "#define|", "#ifdef|", "#endif|", NULL
 };
 
