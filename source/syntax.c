@@ -1,13 +1,11 @@
 #include "syntax.h"
 
 #include "syntax/c.h"
-#include "syntax/js.h"
 
 extern struct editorConfig Editor;
 
 struct editorSyntax HLDB[] = {
-  C_SYNTAX,
-  JS_SYNTAX
+  C_SYNTAX
 };
 
 void editorUpdateSyntax(erow *row) {
