@@ -29,6 +29,10 @@
 */
 typedef struct erow {
   /**
+   * index of the line within the file.
+  */
+  int index;
+  /**
    * row length
   */
   int size;
@@ -44,6 +48,14 @@ typedef struct erow {
    * renderer content
   */
   char* render;
+  /**
+   * contains the highlight type corresponding to each character in the render
+  */
+  unsigned char* highlight;
+  /**
+   * boolean value that defines if the line is part of a comment
+  */
+  int hl_open_comment;
 } erow;
 
 /**
@@ -103,6 +115,10 @@ struct editorConfig {
    * stores the timestamp for the message
   */
   time_t statusmsg_time;
+  /**
+   * pointer to current editor syntax
+  */
+  struct editorSyntax *syntax;
   /**
    * stores original attributes of the terminal.
   */
